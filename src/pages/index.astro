@@ -1,2 +1,51 @@
 ---
+import Layout from "@/layouts/Layout.astro";
 ---
+
+<Layout
+  title="Redirecting / Redirecionando"
+  desc="Sending to the correct page... / Enviando para a página certa..."
+>
+  <script is:inline slot="head">
+    (function () {
+      // Supported languages on your site
+      const supportedLocales = ["en", "pt"];
+      const defaultLocale = "en";
+
+      // Check browser languages or single language
+      const userLang = (
+        navigator.language ||
+        navigator.userLanguage ||
+        ""
+      ).toLowerCase();
+      const shortLang = userLang.split("-")[0];
+
+      let targetLocale = defaultLocale;
+
+      // Try full match first (e.g., 'pt-br'), then short match (e.g., 'pt')
+      if (supportedLocales.includes(userLang)) {
+        targetLocale = userLang;
+      } else if (supportedLocales.includes(shortLang)) {
+        targetLocale = shortLang;
+      } else {
+        // Check navigator.languages array if available
+        if (navigator.languages) {
+          for (const lang of navigator.languages) {
+            const cleaned = lang.toLowerCase();
+            const short = cleaned.split("-")[0];
+            if (supportedLocales.includes(cleaned)) {
+              targetLocale = cleaned;
+              break;
+            } else if (supportedLocales.includes(short)) {
+              targetLocale = short;
+              break;
+            }
+          }
+        }
+      }
+
+      // Perform client-side redirect
+      window.location.replace(`/${targetLocale}/`);
+    })();
+  </script>
+</Layout>

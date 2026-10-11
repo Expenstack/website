@@ -1,0 +1,42 @@
+---
+import { cn } from "cn";
+import type { HTMLTag, Polymorphic } from "astro/types";
+import { cva, type VariantProps } from "class-variance-authority";
+
+export const buttonVariants = cva(
+  "w-fit transform rounded-lg transition-all active:translate-y-0.25",
+  {
+    variants: {
+      variant: {
+        standard:
+          "border border-transparent bg-accent text-accent-foreground hover:border-border hover:bg-background hover:text-foreground",
+      },
+      size: {
+        sm: "p-2 px-8 text-sm",
+        md: "p-3 px-12 text-base",
+        lg: "p-6 px-24 text-lg",
+      },
+    },
+    defaultVariants: {
+      variant: "standard",
+      size: "sm",
+    },
+  },
+);
+
+type Props<T extends HTMLTag = "button"> = Polymorphic<{ as: T }> &
+  VariantProps<typeof buttonVariants>;
+
+const {
+  as: Tag = "button",
+  variant,
+  size,
+
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<Tag class={cn(buttonVariants({ variant, size }))} {...rest}>
+  <slot />
+</Tag>

@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 
 import { satteri } from "@astrojs/markdown-satteri";
 import externalLinks from "./src/plugins/external-links";
@@ -16,13 +16,27 @@ export default defineConfig({
     defaultLocale: "en",
     locales: ["pt", "en"],
     routing: {
-      redirectToDefaultLocale: true,
       prefixDefaultLocale: true,
     },
   },
 
   integrations: [sitemap(), mdx(), svelte()],
   vite: { plugins: [tailwindcss()] },
+
+  fonts: [
+    {
+      name: "DM Sans",
+      cssVariable: "--font-dm-sans",
+      provider: fontProviders.google(),
+      weights: ["100 900"],
+    },
+    {
+      name: "DM Mono",
+      cssVariable: "--font-dm-mono",
+      provider: fontProviders.google(),
+      weights: ["400 600"],
+    },
+  ],
 
   markdown: {
     shikiConfig: {

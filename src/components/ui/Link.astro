@@ -1,0 +1,27 @@
+---
+import { cn } from "cn";
+import type { HTMLAttributes } from "astro/types";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+interface Props extends HTMLAttributes<"a"> {
+  localize?: boolean;
+}
+
+const { rel, target, href, localize = true, ...rest } = Astro.props;
+
+const aTarget =
+  target ?? (href?.toString().startsWith("https://") ? "_blank" : undefined);
+const aRel =
+  !aTarget && aTarget !== "_self" ? cn("noreferrer noopener", rel) : rel;
+const aHref =
+  localize && (!aTarget || aTarget === "_self")
+    ? getRelativeLocaleUrl(
+        Astro.currentLocale ?? "pt",
+        href instanceof URL ? href.pathname : (href ?? undefined),
+      )
+    : href;
+---
+
+<a {...rest} href={aHref} target={aTarget} rel={aRel}>
+  <slot />
+</a>

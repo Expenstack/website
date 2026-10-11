@@ -1,0 +1,7 @@
+<script>
+  const theme = localStorage.getItem("theme") ?? "auto";
+
+  document.addEventListener("astro:page-load", () => {
+    document.documentElement.dataset.theme = theme;
+  });
+</script>
