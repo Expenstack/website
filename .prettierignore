@@ -1,0 +1,7 @@
+# build output
+.astro/
+dist/
+
+# dependencies
+pnpm-lock.yaml
+.pnpm-store/

@@ -1,0 +1,55 @@
+---
+import "@/styles/global.css";
+import defaultCover from "@content/assets/cover.png";
+import type { HTMLAttributes } from "astro/types";
+import { getImage } from "astro:assets";
+
+interface LayoutProps {
+  title: string;
+  desc: string;
+  cover?: ImageMetadata;
+}
+
+interface Props
+  extends LayoutProps, Omit<HTMLAttributes<"body">, keyof LayoutProps> {}
+
+const { title, desc, cover = defaultCover, ...rest } = Astro.props;
+const optimizedCover = await getImage({
+  src: cover,
+  width: 1280,
+  height: 628,
+});
+const imageURL = new URL(optimizedCover.src, Astro.site);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    {/* primary */}
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={desc} />
+
+    {/* open graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.site} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={imageURL} />
+
+    {/* twitter */}
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.site} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={desc} />
+    <meta property="twitter:image" content={imageURL} />
+  </head>
+  <body {...rest}>
+    <slot />
+  </body>
+</html>
