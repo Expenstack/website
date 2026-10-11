@@ -1,7 +1,10 @@
 ---
-import Themes from "@/components/Themes.astro";
 import "@/styles/global.css";
+import favicon from "@content/assets/favicon.svg";
 import defaultCover from "@content/assets/cover.png";
+
+import Themes from "@/components/Themes.astro";
+import Header from "@/components/Header.astro";
 import type { HTMLAttributes } from "astro/types";
 import { Font } from "astro:assets";
 import { getImage } from "astro:assets";
@@ -28,7 +31,7 @@ const imageURL = new URL(optimizedCover.src, Astro.site);
 <html lang={Astro.currentLocale} data-theme="auto">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={favicon.src} />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
@@ -60,6 +63,7 @@ const imageURL = new URL(optimizedCover.src, Astro.site);
     <meta property="twitter:image" content={imageURL} />
   </head>
   <body>
+    <Header />
     <main transition:name="main" transition:animate="slide" {...rest}>
       <slot />
     </main>

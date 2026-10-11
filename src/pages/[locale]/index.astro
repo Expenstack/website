@@ -1,5 +1,11 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { localizeGSP, createTranslate } from "@/i18n";
+
+export const getStaticPaths = localizeGSP();
+
+const { locale } = Astro.params;
+const t = createTranslate(locale, "home");
 ---
 
 <Layout
@@ -7,6 +13,6 @@ import Layout from "@/layouts/Layout.astro";
   desc="Expenstack is a fully-featured, free and open source expense tracker application."
 >
   <main class="p-4 grid min-h-svh place-content-center">
-    <h1 class="text-6xl font-black font-heading">Hello, World!</h1>
+    <h1 class="text-6xl font-black font-heading">{t("message")}</h1>
   </main>
 </Layout>
