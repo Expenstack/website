@@ -1,5 +1,4 @@
 ---
-import { cn } from "cn";
 import type { HTMLAttributes } from "astro/types";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
@@ -12,7 +11,7 @@ const { rel, target, href, localize = true, ...rest } = Astro.props;
 const aTarget =
   target ?? (href?.toString().startsWith("https://") ? "_blank" : undefined);
 const aRel =
-  !aTarget && aTarget !== "_self" ? cn("noreferrer noopener", rel) : rel;
+  aTarget && aTarget !== "_self" ? ("noreferrer noopener " + rel).trim() : rel;
 const aHref =
   localize && (!aTarget || aTarget === "_self")
     ? getRelativeLocaleUrl(

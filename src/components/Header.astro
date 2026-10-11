@@ -1,8 +1,53 @@
 ---
 import { createTranslate } from "@/i18n";
+import Favicon from "@content/assets/favicon.svg";
+import Link from "./ui/Link.astro";
 
 const t = createTranslate(Astro.currentLocale);
+
+const items = [
+  { label: t("header.about"), href: "/about" },
+  { label: t("header.install"), href: "/install" },
+  { label: t("header.contribute"), href: "/contribute" },
+];
 ---
 
-<header class="fixed inset-12 h-fit bg-red-400">
+<header
+  class="fixed inset-10 p-2 h-12 bg-background/50 backdrop-blur-lg z-50 flex justify-around"
+  transition:name="header"
+>
+  <Link
+    href="/"
+    class="flex italic items-center gap-2 font-heading text-xl font-black"
+  >
+    <Favicon width={32} height={32} />
+    Expenstack
+  </Link>
+
+  <nav>
+    <ul class="flex">
+      {items.map((item) => {
+        const unlocalizedPathname = Astro.url.pathname.replace(
+          `/${Astro.currentLocale}`,
+          "",
+        );
+        const selected =
+          item.href === "/"
+            ? unlocalizedPathname === item.href
+            : unlocalizedPathname.startsWith(item.href);
+        const attr = selected ? true : undefined;
+        return (
+          <li>
+            <Link
+              data-selected={attr}
+              href={item.href}
+              class="p-2 data-selected:bg-accent rounded-lg shadow-lg"
+            >
+              {item.label}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
 </header>

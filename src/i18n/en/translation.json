@@ -1,3 +1,7 @@
 {
-  "header": {}
+  "header": {
+    "about": "About",
+    "install": "Install",
+    "contribute": "Contribute"
+  }
 }
