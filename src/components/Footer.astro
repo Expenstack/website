@@ -1,0 +1,23 @@
+---
+import { createTranslate } from "@/i18n";
+import Link from "./ui/Link.astro";
+
+const t = createTranslate(Astro.currentLocale);
+---
+
+<footer
+  class="opacity-50 grid grid-cols-2 place-content-center p-4 gap-4"
+  transition:persist="footer"
+>
+  <p class="text-center">
+    Copyright &copy; 2026 sprucepad. {t("footer.license")}
+  </p>
+  <p class="text-center">
+    <Link href="/legal/privacy" class="underline">
+      {t("footer.privacyPolicy")}
+    </Link>{" "}
+    <Link href="/contribute" class="underline">
+      {t("footer.funding")}
+    </Link>
+  </p>
+</footer>

@@ -3,5 +3,10 @@
     "about": "About",
     "install": "Install",
     "contribute": "Contribute"
+  },
+  "footer": {
+    "license": "MIT License.",
+    "privacyPolicy": "See our Privacy Policy.",
+    "funding": "Funded by your kindness."
   }
 }

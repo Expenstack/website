@@ -2,6 +2,8 @@
 import { createTranslate } from "@/i18n";
 import Favicon from "@content/assets/favicon.svg";
 import Link from "./ui/Link.astro";
+import MenuIcon from "@lucide/astro/icons/menu";
+import XIcon from "@lucide/astro/icons/x";
 
 const t = createTranslate(Astro.currentLocale);
 
@@ -13,7 +15,8 @@ const items = [
 ---
 
 <header
-  class="fixed inset-10 p-2 h-12 bg-background/50 backdrop-blur-lg z-50 flex justify-around"
+  id="header"
+  class="fixed inset-10 p-2 h-12 before:content-[''] before:absolute before:inset-0 before:rounded-lg before:bg-background/75 before:backdrop-blur-lg z-50 flex justify-between data-scrolled:inset-2 transition-[inset] items-center group before:-z-50"
   transition:name="header"
 >
   <Link
@@ -24,8 +27,13 @@ const items = [
     Expenstack
   </Link>
 
-  <nav>
-    <ul class="flex">
+  <button id="header-toggle" class="sm:hidden">
+    <MenuIcon class="group-data-open:hidden" />
+    <XIcon class="group-data-open:block hidden" />
+  </button>
+
+  <nav class="fixed right-12 group-data-scrolled:right-4 top-24 bg-background/75 backdrop-blur-lg transition-[right,top,translate] group-data-scrolled:top-16 p-4 rounded-lg translate-x-[calc(100%+3rem)] group-data-open:translate-x-0 sm:static sm:translate-none sm:p-0 sm:bg-transparent sm:backdrop-blur-none">
+    <ul class="flex flex-col items-center sm:flex-row">
       {items.map((item) => {
         const unlocalizedPathname = Astro.url.pathname.replace(
           `/${Astro.currentLocale}`,
@@ -37,11 +45,11 @@ const items = [
             : unlocalizedPathname.startsWith(item.href);
         const attr = selected ? true : undefined;
         return (
-          <li>
+          <li class="w-full">
             <Link
               data-selected={attr}
               href={item.href}
-              class="p-2 data-selected:bg-accent rounded-lg shadow-lg"
+              class="p-2 data-selected:bg-accent rounded-lg data-selected:shadow-lg block text-end"
             >
               {item.label}
             </Link>
@@ -51,3 +59,34 @@ const items = [
     </ul>
   </nav>
 </header>
+
+<script>
+  let controller: AbortController | undefined;
+  document.addEventListener("astro:page-load", () => {
+    controller?.abort();
+    controller = new AbortController();
+    const signal = controller.signal;
+
+    const $header = document.getElementById("header");
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!$header) return;
+
+        console.log(window.scrollY);
+        if (window.scrollY > 20) {
+          $header.dataset.scrolled = "true";
+        } else {
+          $header.removeAttribute("data-scrolled");
+        }
+      },
+      { signal },
+    );
+
+    const $headerToggle = document.getElementById("header-toggle");
+    $headerToggle?.addEventListener("click", () => {
+      $header?.toggleAttribute("data-open");
+    });
+  });
+</script>

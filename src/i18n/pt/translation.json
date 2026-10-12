@@ -3,5 +3,10 @@
     "about": "Sobre",
     "install": "Instalar",
     "contribute": "Contribuir"
+  },
+  "footer": {
+    "license": "Licença MIT.",
+    "privacyPolicy": "Veja nossa Política de Privacidade.",
+    "funding": "Financiado pela sua generosidade."
   }
 }

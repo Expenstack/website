@@ -27,6 +27,7 @@
     "@astrojs/mdx": "^8.0.3",
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/svelte": "^9.0.1",
+    "@lucide/astro": "^1.55.0",
     "astro": "^7.3.8",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
