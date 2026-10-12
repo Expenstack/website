@@ -13,7 +13,7 @@ const resources = {
 } as const;
 
 type Resource = typeof resources.en;
-type Namespace = keyof Resource;
+export type Namespace = keyof Resource;
 
 declare module "i18next" {
   interface CustomTypeOptions {

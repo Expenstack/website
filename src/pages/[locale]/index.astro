@@ -1,11 +1,13 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import { localizeGSP, createTranslate } from "@/i18n";
+import Localize, { defineLocalize } from "@/components/ui/Localize.astro";
 
 export const getStaticPaths = localizeGSP();
 
 const { locale } = Astro.params;
 const t = createTranslate(locale, "home");
+void t;
 ---
 
 <Layout
@@ -13,5 +15,9 @@ const t = createTranslate(locale, "home");
   desc="Expenstack is a fully-featured, free and open source expense tracker application."
   class="p-4 grid min-h-svh place-content-center"
 >
-  <h1 class="text-6xl font-black font-heading">{t("message")}</h1>
+  <h1 class="text-6xl font-black font-heading">
+    <Localize {...defineLocalize({ ns: ["home"], tKey: "message" })}>
+      <a href="/test" class="underline" />
+    </Localize>
+  </h1>
 </Layout>

@@ -1,0 +1,47 @@
+---
+import { createTranslate, type Namespace } from "@/i18n";
+import type { ParseKeys } from "i18next";
+
+interface Props<T extends Namespace | Namespace[] = "translation"> {
+  ns?: T;
+  locale?: string;
+  tKey: ParseKeys<T>;
+}
+
+export function defineLocalize<T extends Namespace | Namespace[]>(
+  props: Props<T>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is a workaround for the current Astro language server, which doesn't support generics.
+): any {
+  return props;
+}
+
+const { ns, tKey, locale = Astro.currentLocale ?? "en" } = Astro.props;
+const t = createTranslate(locale, ns);
+
+const children = await Astro.slots.render("default");
+
+function interpolate(...params: Parameters<typeof t>) {
+  const localizedString = t(...params);
+  const tagsRegex = /<([\w\d]+)([^>]*)>/;
+  const referenceStringMatches = children.match(new RegExp(tagsRegex, "gi"));
+
+  if (!referenceStringMatches) return localizedString;
+
+  const tags = referenceStringMatches.map((tagNode) => {
+    const [, name, attributes] = tagNode.match(tagsRegex)!;
+    return { name, attributes };
+  });
+
+  return localizedString.replace(/<\/?(\d+)>/g, (match, index: string) => {
+    const tag = tags[Number(index)];
+    if (!tag) return match;
+
+    return match.startsWith("</")
+      ? `</${tag.name}>`
+      : `<${tag.name}${tag.attributes}>`;
+  });
+}
+---
+
+{/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- this is checked from the component props */}
+<Fragment set:html={interpolate(tKey as any)} />
